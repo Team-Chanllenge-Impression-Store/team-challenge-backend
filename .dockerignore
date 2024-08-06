@@ -1,0 +1,26 @@
+# Ignore Maven and Gradle build directories
+target/
+!target/demo-0.0.1-SNAPSHOT.jar
+build/
+
+# Ignore IDE-specific files and directories
+.idea/
+.vscode/
+*.iml
+
+# Ignore source control directories
+.git/
+.gitignore
+
+# Ignore temporary files
+*.tmp
+*.log
+
+# Ignore local configuration files
+application-dev.properties
+application-local.properties
+.env
+
+# Ignore Docker-related files (if not needed in the image)
+Dockerfile*
+.dockerignore
