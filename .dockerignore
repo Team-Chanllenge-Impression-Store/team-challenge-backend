@@ -20,6 +20,7 @@ build/
 application-dev.properties
 application-local.properties
 .env
+.env.example
 
 # Ignore Docker-related files (if not needed in the image)
 Dockerfile*
