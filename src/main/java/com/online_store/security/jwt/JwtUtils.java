@@ -40,7 +40,7 @@ public class JwtUtils {
 
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
-        long dayDuration = 24 * 60 * 60; // 86400s
+        int dayDuration = 86400; // day duration in seconds
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt)
                 .path("/api")
                 .maxAge(dayDuration)
