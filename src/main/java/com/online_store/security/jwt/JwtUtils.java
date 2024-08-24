@@ -29,7 +29,7 @@ public class JwtUtils {
     @Value("${com.example.demo.jwtCookieName}")
     private String jwtCookie;
 
-    public String geJwtFromCookies(HttpServletRequest request) {
+    public String getJwtFromCookies(HttpServletRequest request) {
         Cookie cookie = WebUtils.getCookie(request, jwtCookie);
         if (cookie != null) {
             return cookie.getValue();
