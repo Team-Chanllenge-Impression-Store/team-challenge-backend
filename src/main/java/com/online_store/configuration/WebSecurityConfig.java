@@ -1,5 +1,6 @@
 package com.online_store.configuration;
 
+import com.online_store.constants.Path;
 import com.online_store.security.jwt.AuthEntryPointJwt;
 import com.online_store.security.jwt.AuthTokenFilter;
 import com.online_store.security.services.UserDetailsServiceImpl;
@@ -57,9 +58,11 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll()
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers(Path.AUTH + "/**").permitAll()
+                        .requestMatchers(Path.PRODUCT + "/**").permitAll()
+                        .requestMatchers(Path.PRODUCT + "/list").permitAll()
+                        .anyRequest().authenticated()
                 );
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
