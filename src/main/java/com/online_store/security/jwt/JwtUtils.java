@@ -1,5 +1,6 @@
 package com.online_store.security.jwt;
 
+import com.online_store.constants.Path;
 import com.online_store.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -42,7 +43,7 @@ public class JwtUtils {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
         int dayDuration = 86400; // day duration in seconds
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt)
-                .path("/api")
+                .path(Path.API_PATHNAME)
                 .maxAge(dayDuration)
                 .httpOnly(true)
                 .build();
@@ -51,7 +52,7 @@ public class JwtUtils {
 
     public ResponseCookie getCleanJwtCookie() {
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, null)
-                .path("/api")
+                .path(Path.API_PATHNAME)
                 .build();
         return cookie;
     }
