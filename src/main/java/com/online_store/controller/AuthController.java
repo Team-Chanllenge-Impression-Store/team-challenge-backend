@@ -74,7 +74,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         MessageResponse response = userService.registerUser(signupRequest);
-        if (response.getMessage().equals(String.valueOf(HttpStatus.BAD_REQUEST))) {
+        if (response.getResponse().equals(String.valueOf(HttpStatus.BAD_REQUEST))) {
             return ResponseEntity.badRequest().body(response);
         }
         return ResponseEntity.ok().body(response);
@@ -96,7 +96,7 @@ public class AuthController {
     @PostMapping("/password-reset")
     public ResponseEntity<?> passwordReset(@Valid @RequestBody ChangePasswordRequest request) {
         MessageResponse messageResponse = userService.changeUserPassword(request);
-        if (messageResponse.getMessage().equals(String.valueOf(HttpStatus.BAD_REQUEST))) {
+        if (messageResponse.getResponse().equals(String.valueOf(HttpStatus.BAD_REQUEST))) {
             return ResponseEntity.badRequest().body(messageResponse);
         }
         return ResponseEntity.ok().body(messageResponse);
