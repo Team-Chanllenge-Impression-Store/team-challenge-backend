@@ -2,8 +2,10 @@ package com.online_store.service.impl;
 
 import com.online_store.constants.ErrorMessage;
 import com.online_store.dto.request.ProductRequest;
+import com.online_store.dto.request.SearchRequest;
 import com.online_store.entity.Product;
 import com.online_store.repository.ProductRepository;
+import com.online_store.repository.specification.ProductSpecification;
 import com.online_store.service.CategoryService;
 import com.online_store.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +39,7 @@ public class ProductServiceImpl implements ProductService {
         Product product;
         if (request.getId() != null) {
             // Update existing product
-            product = productRepository.findById(request.getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMessage.CATEGORY_NOT_FOUND));
+            product = getProductById(request.getId());
         } else {
             // Create new product
             product = modelMapper.map(request, Product.class);
@@ -47,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
+        product.setDate(request.getDate());
         product.setCity(request.getCity());
         product.setParticipantCount(request.getParticipantCount());
         product.setAvailable(request.getAvailable());
@@ -66,5 +68,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> searchProducts(SearchRequest searchRequest) {
+        return productRepository.findAll(ProductSpecification.searchProducts(
+                searchRequest.getCity(),
+                searchRequest.getDate(),
+                searchRequest.getParticipantCount()
+        ));
     }
 }
