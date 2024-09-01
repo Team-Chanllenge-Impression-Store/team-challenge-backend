@@ -6,6 +6,7 @@ import com.online_store.constants.ErrorMessage;
 import com.online_store.constants.Path;
 import com.online_store.constants.SuccessMessage;
 import com.online_store.dto.request.ProductRequest;
+import com.online_store.dto.request.SearchRequest;
 import com.online_store.entity.Product;
 import com.online_store.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,9 +18,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProductController.class)
 @Import(WebSecurityTestConfig.class)
+@ActiveProfiles("test")
 @TestPropertySource("/application-test.properties")
 class ProductControllerTest {
 
@@ -46,12 +51,17 @@ class ProductControllerTest {
 
     private Product testProduct;
     private ProductRequest testProductRequest;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     @BeforeEach
     void setUp() {
         testProduct = new Product();
         testProduct.setId(1L);
         testProduct.setName("Test Product");
+        testProduct.setCity("Test City");
+        testProduct.setDate(LocalDateTime.parse("2024-01-01T00:00:00", DATE_TIME_FORMATTER));
+        testProduct.setAvailable(true);
+        testProduct.setParticipantCount(10);
         testProduct.setDescription("Test Description");
         testProduct.setPrice(10.0);
 
@@ -84,7 +94,7 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.name").value(testProduct.getName()))
                 .andExpect(jsonPath("$.description").value(testProduct.getDescription()))
                 .andExpect(jsonPath("$.price").value(testProduct.getPrice()))
-                .andExpect(jsonPath("$.date").value(testProduct.getDate()))
+                .andExpect(jsonPath("$.date").value(testProduct.getDate().format(DATE_TIME_FORMATTER)))
                 .andExpect(jsonPath("$.city").value(testProduct.getCity()))
                 .andExpect(jsonPath("$.participantCount").value(testProduct.getParticipantCount()))
                 .andExpect(jsonPath("$.available").value(testProduct.getAvailable()));
@@ -111,9 +121,48 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$[0].name").value(testProduct.getName()))
                 .andExpect(jsonPath("$[0].description").value(testProduct.getDescription()))
                 .andExpect(jsonPath("$[0].price").value(testProduct.getPrice()))
-                .andExpect(jsonPath("$[0].date").value(testProduct.getDate()))
+                .andExpect(jsonPath("$[0].date").value(testProduct.getDate().format(DATE_TIME_FORMATTER)))
                 .andExpect(jsonPath("$[0].city").value(testProduct.getCity()))
                 .andExpect(jsonPath("$[0].participantCount").value(testProduct.getParticipantCount()))
                 .andExpect(jsonPath("$[0].available").value(testProduct.getAvailable()));
+    }
+
+    @Test
+    void searchProducts_ShouldReturnListOfProducts() throws Exception {
+        List<Product> products = Collections.singletonList(testProduct);
+        when(productService.searchProducts(any(SearchRequest.class))).thenReturn(products);
+
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setCity(testProduct.getCity());
+        searchRequest.setDate(testProduct.getDate());
+        searchRequest.setParticipantCount(testProduct.getParticipantCount());
+
+        mockMvc.perform(post(Path.PRODUCT + "/search")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(searchRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(testProduct.getId()))
+                .andExpect(jsonPath("$[0].name").value(testProduct.getName()))
+                .andExpect(jsonPath("$[0].description").value(testProduct.getDescription()))
+                .andExpect(jsonPath("$[0].price").value(testProduct.getPrice()))
+                .andExpect(jsonPath("$[0].date").value(testProduct.getDate().format(DATE_TIME_FORMATTER)))
+                .andExpect(jsonPath("$[0].city").value(testProduct.getCity()))
+                .andExpect(jsonPath("$[0].participantCount").value(testProduct.getParticipantCount()))
+                .andExpect(jsonPath("$[0].available").value(testProduct.getAvailable()));
+    }
+
+    @Test
+    void searchProducts_WithDateGreaterThanAvailableProducts_ShouldReturnEmptyList() throws Exception {
+        List<Product> products = Collections.emptyList();
+        when(productService.searchProducts(any(SearchRequest.class))).thenReturn(products);
+
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setDate(LocalDateTime.now().plusDays(1));
+
+        mockMvc.perform(post(Path.PRODUCT + "/search")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(searchRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
     }
 }
