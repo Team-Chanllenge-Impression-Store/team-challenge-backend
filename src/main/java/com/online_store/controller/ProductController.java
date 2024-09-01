@@ -4,6 +4,7 @@ import com.online_store.constants.ErrorMessage;
 import com.online_store.constants.Path;
 import com.online_store.constants.SuccessMessage;
 import com.online_store.dto.request.ProductRequest;
+import com.online_store.dto.request.SearchRequest;
 import com.online_store.dto.response.MessageResponse;
 import com.online_store.entity.Product;
 import com.online_store.service.ProductService;
@@ -68,6 +69,18 @@ public class ProductController {
     @GetMapping("/list")
     public ResponseEntity<?> getProducts() {
         List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok().body(products);
+    }
+
+    /**
+     * Searches for products based on the given search criteria.
+     *
+     * @param searchRequest The {@link SearchRequest} object containing search criteria
+     * @return ResponseEntity with a list of products matching the search criteria and HTTP status 200 (OK)
+     */
+    @PostMapping("/search")
+    public ResponseEntity<?> searchProducts(@Valid @RequestBody SearchRequest searchRequest) {
+        List<Product> products = productService.searchProducts(searchRequest);
         return ResponseEntity.ok().body(products);
     }
 }
