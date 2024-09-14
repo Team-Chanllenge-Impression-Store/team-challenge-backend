@@ -10,9 +10,8 @@ import com.online_store.entity.Product;
 import com.online_store.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,11 +25,12 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(Path.PRODUCT)
+@RequiredArgsConstructor
+@Slf4j
 @Tag(name = "Product", description = "API to work with products")
 public class ProductController {
-    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
-    @Autowired
-    private ProductService productService;
+
+    private final ProductService productService;
 
     /**
      * Creates or updates a product.
@@ -57,7 +57,7 @@ public class ProductController {
     public ResponseEntity<?> getProduct(@PathVariable Long productId) {
         Product product = productService.getProductById(productId);
         if (product == null) {
-            logger.warn("Product with id {} doesn't exist", productId);
+            log.warn("Product with id {} doesn't exist", productId);
             return ResponseEntity.badRequest().body(new MessageResponse(String.valueOf(HttpStatus.NOT_FOUND), ErrorMessage.PRODUCT_NOT_FOUND));
         }
         return ResponseEntity.ok().body(product);
