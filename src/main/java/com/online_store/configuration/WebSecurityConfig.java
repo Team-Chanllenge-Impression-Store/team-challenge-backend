@@ -3,9 +3,9 @@ package com.online_store.configuration;
 import com.online_store.security.jwt.AuthEntryPointJwt;
 import com.online_store.security.jwt.AuthTokenFilter;
 import com.online_store.security.services.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,13 +23,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 @Profile("!test")
 public class WebSecurityConfig {
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -64,7 +62,6 @@ public class WebSecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry.anyRequest().permitAll()
                 )
-//        http.authenticationProvider(authenticationProvider());
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
