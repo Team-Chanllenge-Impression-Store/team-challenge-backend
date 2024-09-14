@@ -12,6 +12,7 @@ import com.online_store.entity.User;
 import com.online_store.security.jwt.JwtUtils;
 import com.online_store.security.services.UserDetailsImpl;
 import com.online_store.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(Path.AUTH)
+@Tag(name = "Auth", description = "Authentication and authorization related API endpoints")
 public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired
