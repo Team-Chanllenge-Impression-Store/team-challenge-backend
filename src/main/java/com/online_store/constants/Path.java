@@ -7,7 +7,7 @@ public class Path {
     public static final String PRODUCT = API_PATHNAME + "/product";
     public static final String ORDER = API_PATHNAME + "/order";
     public static final String CATEGORY = API_PATHNAME + "/category";
-
+    public static final String FRONT_END_LOCALHOST = "http://localhost:3000";
     private Path() {
     }
 }

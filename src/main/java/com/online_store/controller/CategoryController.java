@@ -7,6 +7,7 @@ import com.online_store.dto.response.CategoryResponse;
 import com.online_store.dto.response.MessageResponse;
 import com.online_store.entity.Category;
 import com.online_store.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(Path.CATEGORY)
+@Tag(name = "Category", description = "Category management API")
 public class CategoryController {
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
     @Autowired

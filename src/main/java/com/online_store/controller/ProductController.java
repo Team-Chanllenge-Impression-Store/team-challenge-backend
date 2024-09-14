@@ -8,6 +8,7 @@ import com.online_store.dto.request.SearchRequest;
 import com.online_store.dto.response.MessageResponse;
 import com.online_store.entity.Product;
 import com.online_store.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(Path.PRODUCT)
+@Tag(name = "Product", description = "API to work with products")
 public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     @Autowired
