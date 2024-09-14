@@ -9,9 +9,7 @@ import com.online_store.entity.Category;
 import com.online_store.service.CategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,11 +23,11 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(Path.CATEGORY)
+@RequiredArgsConstructor
 @Tag(name = "Category", description = "Category management API")
 public class CategoryController {
-    private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
-    @Autowired
-    private CategoryService categoryService;
+
+    private final CategoryService categoryService;
 
     /**
      * Handles the creation or updating of a category.

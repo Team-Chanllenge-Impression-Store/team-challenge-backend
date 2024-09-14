@@ -14,9 +14,7 @@ import com.online_store.security.services.UserDetailsImpl;
 import com.online_store.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -33,13 +31,11 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(Path.AUTH)
+@RequiredArgsConstructor
 @Tag(name = "Auth", description = "Authentication and authorization related API endpoints")
 public class AuthController {
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private JwtUtils jwtUtils;
+    private final UserService userService;
+    private final JwtUtils jwtUtils;
 
     /**
      * Sign-in API endpoint which is responsible for authenticating login request and setting JWT cookie
