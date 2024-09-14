@@ -12,9 +12,8 @@ import com.online_store.repository.UserRepository;
 import com.online_store.security.services.UserDetailsImpl;
 import com.online_store.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,8 +29,8 @@ import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
@@ -54,7 +53,7 @@ public class UserServiceImpl implements UserService {
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setPassword(encoder.encode(signupRequest.getPassword()));
-        logger.info("Registered user: {}", user.getEmail());
+        log.info("Registered user: {}", user.getEmail());
         // save user to DB
         userRepository.save(user);
 
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService {
                     .orElseThrow(() -> new UsernameNotFoundException(ErrorMessage.USER_NOT_FOUND));
 
             user.setPassword(encoder.encode(request.getPassword()));
-            logger.info("Password changed for user: {}", user.getEmail());
+            log.info("Password changed for user: {}", user.getEmail());
             userRepository.save(user);
             return new MessageResponse(String.valueOf(HttpStatus.OK), SuccessMessage.PASSWORD_CHANGED);
         }

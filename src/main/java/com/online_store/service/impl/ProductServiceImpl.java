@@ -9,9 +9,8 @@ import com.online_store.repository.specification.ProductSpecification;
 import com.online_store.service.CategoryService;
 import com.online_store.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +20,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
-    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
@@ -32,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Product createOrUpdateProduct(ProductRequest request) {
         if (request.getName() == null || request.getName().trim().isEmpty()) {
-            logger.error("Product name is null or empty");
+            log.error("Product name is null or empty");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product name is empty");
         }
 
@@ -54,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         product.setAvailable(request.getAvailable());
         product.setCategory(categoryService.getCategoryById(request.getCategoryId()));
         productRepository.save(product);
-        logger.info("Saved product: {}", product);
+        log.info("Saved product: {}", product);
         return product;
     }
 
