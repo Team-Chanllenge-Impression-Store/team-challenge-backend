@@ -6,6 +6,8 @@ import com.online_store.constants.Path;
 import com.online_store.constants.SuccessMessage;
 import com.online_store.dto.request.CategoryRequest;
 import com.online_store.entity.Category;
+import com.online_store.security.jwt.JwtUtils;
+import com.online_store.security.services.UserDetailsServiceImpl;
 import com.online_store.service.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,13 +41,14 @@ class CategoryControllerTest {
 
     @Value("${com.example.demo.mockJwtCookieName}")
     private String mockJwtCookie;
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private CategoryService categoryService;
-
+    @MockBean
+    private JwtUtils jwtUtils;
+    @MockBean
+    private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private ObjectMapper objectMapper;
 

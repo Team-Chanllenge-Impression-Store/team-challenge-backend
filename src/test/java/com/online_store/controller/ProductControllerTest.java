@@ -8,6 +8,8 @@ import com.online_store.constants.SuccessMessage;
 import com.online_store.dto.request.ProductRequest;
 import com.online_store.dto.request.SearchRequest;
 import com.online_store.entity.Product;
+import com.online_store.security.jwt.JwtUtils;
+import com.online_store.security.services.UserDetailsServiceImpl;
 import com.online_store.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +47,11 @@ class ProductControllerTest {
 
     @MockBean
     private ProductService productService;
+
+    @MockBean
+    private JwtUtils jwtUtils;
+    @MockBean
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private ObjectMapper objectMapper;
