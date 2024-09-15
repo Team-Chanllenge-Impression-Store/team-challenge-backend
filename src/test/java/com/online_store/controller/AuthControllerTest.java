@@ -11,6 +11,7 @@ import com.online_store.dto.request.SignupRequest;
 import com.online_store.dto.response.MessageResponse;
 import com.online_store.security.jwt.JwtUtils;
 import com.online_store.security.services.UserDetailsImpl;
+import com.online_store.security.services.UserDetailsServiceImpl;
 import com.online_store.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +46,8 @@ class AuthControllerTest {
 
     @MockBean
     private JwtUtils jwtUtils;
+    @MockBean
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private ObjectMapper objectMapper;
