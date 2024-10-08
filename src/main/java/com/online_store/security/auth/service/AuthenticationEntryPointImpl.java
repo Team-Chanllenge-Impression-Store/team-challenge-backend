@@ -1,4 +1,4 @@
-package com.online_store.security.jwt;
+package com.online_store.security.auth.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class AuthEntryPointJwt implements AuthenticationEntryPoint {
+public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
