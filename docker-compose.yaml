@@ -2,8 +2,8 @@ services:
   spring:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: spring-pg-test:latest
+      dockerfile: Dockerfile.dev
+    image: impression-store-dev:latest
     ports:
       - "8080:8080"
     env_file:
@@ -20,7 +20,11 @@ services:
     #    command: ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     networks:
       - my-network
-
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2048MB
   db:
     image: postgres
     ports:
