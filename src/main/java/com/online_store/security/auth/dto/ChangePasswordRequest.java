@@ -1,6 +1,6 @@
-package com.online_store.dto.request;
+package com.online_store.security.auth.dto;
 
-import com.online_store.constants.ErrorMessage;
+import com.online_store.utils.constant.ErrorMessage;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

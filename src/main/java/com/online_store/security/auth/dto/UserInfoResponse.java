@@ -1,4 +1,4 @@
-package com.online_store.dto.response;
+package com.online_store.security.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class UserInfoResponse {
-    private Long id;
     private String email;
     private Boolean active;
     private List<String> roles;
