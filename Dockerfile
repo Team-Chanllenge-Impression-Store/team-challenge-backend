@@ -10,7 +10,7 @@ COPY mvnw pom.xml ./
 COPY src ./src
 
 # skip tests for now
-RUN mvn package -DskipTests
+RUN ./mvnw clean package -DskipTests
 
 # copy local configuration file into container if needed
 CMD ["./mvnw", "spring-boot:run"]
