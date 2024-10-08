@@ -1,6 +1,6 @@
 package com.online_store.configuration;
 
-import com.online_store.constants.Path;
+import com.online_store.utils.constant.Path;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
