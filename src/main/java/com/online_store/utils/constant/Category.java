@@ -1,4 +1,4 @@
-package com.online_store.constants;
+package com.online_store.utils.constant;
 
 public class Category {
     public static final String OCEAN = "ocean";

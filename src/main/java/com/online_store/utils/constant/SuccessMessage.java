@@ -1,4 +1,4 @@
-package com.online_store.constants;
+package com.online_store.utils.constant;
 
 public class SuccessMessage {
     public static final String PASSWORD_CHANGED = "Password successfully changed!";
