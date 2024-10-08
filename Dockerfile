@@ -1,16 +1,13 @@
-FROM openjdk:17
+FROM maven:3.8.6-openjdk-18 AS build
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
+COPY pom.xml ./
 
-COPY mvnw pom.xml ./
-
-# dir with *.java files
 COPY src ./src
 
-# skip tests for now
-RUN ./mvnw clean package -DskipTests
+RUN mvn package -DskipTests
 
-# copy local configuration file into container if needed
-CMD ["./mvnw", "spring-boot:run"]
+EXPOSE 8080
+
+ENTRYPOINT ["mvn", "spring-boot:run"]
