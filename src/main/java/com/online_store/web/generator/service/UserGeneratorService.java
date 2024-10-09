@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,9 @@ import java.util.Set;
 public class UserGeneratorService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
+    @Transactional
     public void generateUsers(int amount) {
         // start time
         long time = System.currentTimeMillis();
@@ -28,6 +30,7 @@ public class UserGeneratorService {
             users.add(createUser());
         }
         userRepository.saveAll(users);
+        users = new ArrayList<>(); // clear list
         long time2 = System.currentTimeMillis();
         long duration = time2 - time;
         log.info("Users generated in {} ms", duration);
