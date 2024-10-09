@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (!StringUtils.hasText(authHeader)) {
             filterChain.doFilter(request, response);
-            log.warn("Authorization header is missing");
+            log.info("Authorization header is missing");
             return;
         }
         if (!authHeader.startsWith(BEARER_PREFIX)) {
