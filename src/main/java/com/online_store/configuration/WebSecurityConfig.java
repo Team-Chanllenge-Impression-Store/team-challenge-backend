@@ -2,7 +2,7 @@ package com.online_store.configuration;
 
 import com.online_store.security.JwtAuthenticationFilter;
 import com.online_store.security.auth.AuthProvider;
-import com.online_store.security.auth.service.AuthenticationEntryPointImpl;
+import com.online_store.utils.constant.Path;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @Profile("!test")
 public class WebSecurityConfig {
-    private final AuthenticationEntryPointImpl unauthorizedHandler;
     private final JwtAuthenticationFilter authenticationJwtTokenFilter;
     private final AuthProvider authProvider;
 
@@ -42,9 +41,11 @@ public class WebSecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+//                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(registry -> registry.anyRequest().permitAll())
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers(Path.GENERATOR + "/**").authenticated()
+                        .anyRequest().permitAll())
                 .addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
